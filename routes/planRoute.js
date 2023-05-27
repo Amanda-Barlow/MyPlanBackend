@@ -3,8 +3,10 @@ const {planCtrl} = require('../controllers')
 
 //CONTROLLERS
 
-// //ROUTES
-// router.get('/', planCtrl.getPlan)
-// router.post('/', planCtrl.createPlan)
+//ROUTES
+router.put('/:id', planCtrl.updatePlan)
+router.delete('/:id', planCtrl.deletePlan)
+router.get('/:id', planCtrl.getPlan)
+router.post('/:id', planCtrl.createPlan)
 
 module.exports = router;
