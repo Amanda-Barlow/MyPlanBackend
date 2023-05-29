@@ -1,3 +1,3 @@
 module.exports = {
-    planCtrl: require('./planCtrl'),
+    formCtrl: require('./formCtrl'),
 }

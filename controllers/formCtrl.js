@@ -37,7 +37,7 @@ const deleteForm = (req, res) => {
     )
 }
 
-const getPlan = (req, res) => {
+const getForm = (req, res) => {
     db.Form.find({})
     .then((foundForm) => {
         if(!foundForm) {
@@ -48,4 +48,4 @@ const getPlan = (req, res) => {
 
 
 
-module.exports = {createForm, updateForm, deleteForm, getPlan}
+module.exports = {createForm, updateForm, deleteForm, getForm}

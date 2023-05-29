@@ -1,6 +1,6 @@
 const router = require("express").Router()
-const planRoute = require("./planRoute")
+const formRoute = require("./formRoute")
 
-router.use('/plan', planRoute)
+router.use('/form', formRoute)
 
 module.exports = router
