@@ -1,5 +1,6 @@
 const routes = require('./routes/index')
-const formRoute = require('./routes/formRoute')
+const userRoute = require('./routes/userRoute')
+
 
 //DEPENDENCIES
 require("dotenv").config();
@@ -14,7 +15,9 @@ app.use(cors());
 app.use(express.urlencoded({extended:true}))
 app.use(express.json());
 
-const MONGOOSE_URL = 'mongodb://localhose:27017/LSYSTEM'
+app.use('/users', userRoute)
+
+const MONGODB_URL = process.env.MONGODB_URL
 
 
 //ROUTES
@@ -23,7 +26,7 @@ app.use((req,res) => {res.status(404) .json({message: "NOT A ROUTE"})
 });
 
 //LISTENER
-mongoose.connect(MONGOOSE_URL, {useNewUrlParser: true})
+mongoose.connect(MONGODB_URL, {useNewUrlParser: true})
 .then (()=>app.listen(PORT, () => {
     console.log (`listening on PORT ${PORT}`);
 }));
