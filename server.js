@@ -8,7 +8,7 @@ const{PORT} = process.env;
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 
 //MIDDLEWARE
 app.use(cors());
@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use('/users', userRoute)
 
-const MONGODB_URL = process.env.MONGODB_URL
+// const MONGODB_URL = process.env.MONGODB_URL
 
 
 //ROUTES
@@ -26,8 +26,8 @@ app.use((req,res) => {res.status(404) .json({message: "NOT A ROUTE"})
 });
 
 //LISTENER
-mongoose.connect(MONGODB_URL, {useNewUrlParser: true})
-.then (()=>app.listen(PORT, () => {
-    console.log (`listening on PORT ${PORT}`);
-}));
+// mongoose.connect(MONGODB_URL, {useNewUrlParser: true})
+// .then (()=>app.listen(PORT, () => {
+//     console.log (`listening on PORT ${PORT}`);
+// }));
 
