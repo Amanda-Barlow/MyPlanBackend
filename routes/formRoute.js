@@ -1,13 +1,17 @@
-const router = require('express').Router();
-const {formCtrl} = require('../controllers')
+const express = require('express')
+const router = express.Router()
+const { getForm, createForm, updateForm, deleteForm } = require('../controllers/formController')
 
 //CONTROLLERS
 
-//ROUTES
 
-router.put('/:id', formCtrl.updateForm)
-router.delete('/:id', formCtrl.deleteForm)
-router.get('/:id', formCtrl.getForm)
-router.post('/:id', formCtrl.createForm)
+//ROUTES
+router.get('/', getForm)
+
+router.post('/', createForm)
+
+router.put('/:id', updateForm)
+
+router.delete('/:id', deleteForm)
 
 module.exports = router;

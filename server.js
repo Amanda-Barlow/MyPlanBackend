@@ -1,33 +1,23 @@
+const express = require("express");
+const dotenv = require('dotenv').config()
+const port = process.env.PORT || 4000;
+
+const app = express();
 const routes = require('./routes/index')
 const userRoute = require('./routes/userRoute')
-
-
-//DEPENDENCIES
-require("dotenv").config();
-const{PORT} = process.env;
-const express = require("express");
-const app = express();
 const cors = require("cors");
-// const mongoose = require('mongoose')
-
-//MIDDLEWARE
-app.use(cors());
-app.use(express.urlencoded({extended:true}))
-app.use(express.json());
-
-app.use('/users', userRoute)
-
+const mongoose = require('mongoose')
+const {errorHandler} = require('./middleware/errorMiddleware')
 // const MONGODB_URL = process.env.MONGODB_URL
 
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use('/users', userRoute)
+app.use('/api/form', require('./routes/formRoute'))
 
-//ROUTES
-app.use("/", routes);
-app.use((req,res) => {res.status(404) .json({message: "NOT A ROUTE"})
-});
+
+app.use(errorHandler)
 
 //LISTENER
-// mongoose.connect(MONGODB_URL, {useNewUrlParser: true})
-// .then (()=>app.listen(PORT, () => {
-//     console.log (`listening on PORT ${PORT}`);
-// }));
+app.listen(port, () => console.log(`Server started on port ${port}`))
 
