@@ -1,21 +1,15 @@
 const mongoose=require('mongoose');
 
-const FormSchema= new mongoose.Schema({
-    name: {type: String, required: true},
-    dob: {type: Date, required: true},
-    goal: {type: String, require: true},
+const formSchema= new mongoose.Schema({
+    text: {type: String, required: true},
+    goal: {type: String, require: false},
     skills: {type: Boolean},
-    frequency: {type: Number, required: true},
-    coping: {type: String, require: true}, 
+    frequency: {type: Number, required: false},
+    coping: {type: String, require: false}, 
     contacts: {type: String},
-    phq9: {type: Number, require: true}, 
-    gad7: {type: Number, require: true}
+    phq9: {type: Number, require: false}, 
+    gad7: {type: Number, require: false}
 }, {timestamps: true});
 
-const userSchema = new mongoose.Schema({
-    username: {type: String, required: true}, 
-    password: {type: String, required: true}
-})
 
-module.exports = mongoose.model('Form', FormSchema);
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Form', formSchema);

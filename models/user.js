@@ -8,4 +8,4 @@ const userSchema = mongoose.Schema({
     id:{type: String},
 })
 
-module.exports = mongoose.model('userSchemas', userSchema)
+module.exports = mongoose.model('userSchema', userSchema)
