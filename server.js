@@ -1,5 +1,4 @@
 const express = require("express");
-require('dotenv').config()
 const {errorHandler} = require('./middleware/errorMiddleware')
 const app = express();
 const routes = require('./routes/index')
