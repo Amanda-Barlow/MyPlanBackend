@@ -17,7 +17,7 @@ const createForm = asyncHandler(async (req, res) => {
     }
 
     const form = await form.create({
-       text: req.body.text
+       form: req.body.text
     })
 
     res.status(200).json(form)
@@ -49,7 +49,7 @@ const deleteForm = asyncHandler(async (req, res) => {
         throw new Error('Form not found')
     }
 
-    await form.remove()
+    await form.remove();
 
     res.status(200).json({ id: req.params.id })
 })
