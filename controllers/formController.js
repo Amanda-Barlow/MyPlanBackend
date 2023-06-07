@@ -1,7 +1,7 @@
 const db = require('../models')
 const asyncHandler = require('express-async-handler')
 console.log (db)
-const Form = require('../models/formModel')
+const Form = require('../models/form')
 const userModel= require('../models/userModel')
 
 //READ ROUTE GET/api/form
