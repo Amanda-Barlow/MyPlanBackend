@@ -1,58 +1,68 @@
 const db = require('../models')
 const asyncHandler = require('express-async-handler')
 console.log (db)
-const Form = require('../models/form')
+const Form = require('../models/formModel')
+const userModel= require('../models/userModel')
 
 //READ ROUTE GET/api/form
 const getForm = asyncHandler(async (req, res) => {
-    const form = await Form.find()
-    res.status(200).json(form)
-})
+    const form = await form.find({ user: req.user.id })
+
+    
+    db.Form.find({})
+    .then((foundForm) => {
+        console.log(foundForm)
+            if(!foundForm){
+                console.log('inside if not form')
+                res.status(404).json({message: "Cannot find Form"})
+            } else {
+                console.log('inside else of form')
+                res.status(200).json({data: foundForm})
+            }
+        })
+    })
 
 //CREATE ROUTE POST/api/form
 const createForm = asyncHandler(async (req, res) => {
-    if(!req.body.text){
-        res.status(400)
-        throw new Error ('Please add your text')
-    }
-
-    const form = await form.create({
-       form: req.body.text
+    console.log(req.body)
+    db.Form.create(req.body)
+    .then((createdForm) => {
+        if(!createdForm){
+            res.status(400).json({message: "Cannot create Form"})
+        } else {
+            res.status(201).json({data: createdForm})
+        } 
     })
-
-    res.status(200).json(form)
 })
 
 //UPDATE ROUTE PUT/api/form/:id
 const updateForm = asyncHandler(async (req, res) => {
-    const form = await Form.findById(req.params.id)
-
-    if(!form) {
-        res.status(400)
-        throw new Error('Form not found')
-    }
-
-    const updatedForm = await Form.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
+    db.Form.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then((updatedForm) => {
+        if(!updatedForm){
+            res.status(400).json({Message: "Could not update Form"})
+        } else {
+            res.status(200).json({Data: updatedForm, Message: "Updated Form"})
+        }
     })
-
-    res.status(200).json(updatedForm)
 })
 
 
 //DESTROY ROUTE DELETE/api/form/:id
 const deleteForm = asyncHandler(async (req, res) => {
-    const form = await Form.findById(req.params.id)
-
-    if(!form) {
-        res.status(400)
-        throw new Error('Form not found')
-    }
-
-    await form.remove();
-
-    res.status(200).json({ id: req.params.id })
+    db.Form.findByIdAndDelete(req.params.id)
+    .then((deletedForm) => {
+        if(!deletedForm){
+            res.status(400).json({Message: "Could not delete Form"})
+        } else {
+            res.status(200).json({Data: deletedForm, Message: "Deleted Form"})
+        }
+    })
 })
 
-
-module.exports = {createForm, updateForm, deleteForm, getForm}
+module.exports = {
+    getForm,
+    createForm, 
+    updateForm, 
+    deleteForm
+}

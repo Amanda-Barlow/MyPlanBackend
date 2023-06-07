@@ -2,6 +2,11 @@ const mongoose=require('mongoose');
 
 
 const formSchema= new mongoose.Schema({
+    user:{
+        type: mongoose.Schema.Types.ObjectId, 
+        required: true,
+        ref: 'User'
+    },
     name: {type: String, required: true},
     goal: {type: String, require: false},
     skills: {type: Boolean},
@@ -13,9 +18,9 @@ const formSchema= new mongoose.Schema({
 }, {timestamps: true});
 
 
-const Form = mongoose.model('Form', formSchema);
+const form = mongoose.model('form', formSchema);
 
-module.exports = Form;
+module.exports = form;
 
 //  {"Form": {
 //     "name": "Bob Barker",

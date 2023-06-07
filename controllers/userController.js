@@ -1,123 +1,88 @@
-const express = require('express')
-const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const axios = require('axios')
-const config = require('config')
+const bcrypt = require('bcryptjs')
+const asyncHandler = require('express-async-handler')
+const User = require('../models/userModel')
 
-const User = require('../models/user')
+//REGISTER NEW USER
+//POST /api.users
+//Public
+const registerUser = asyncHandler(async(req, res) => {
+    const { name, email, password } = req.body
 
-const signinController = async(req, res) => {
-    if(req.body.googleAccessToken){
-    //oauth
-    axios.get(`https://www.googleapis.com/oauth2/v3/userinfo`, {
-            headers:{
-                'Authorization': `Bearer ${req.body.googleAccessToken}`
-            }
-        }).then( async (response) =>{
-            const email = response.data.email;
-
-            const alreadyExistUser = await User.findOne({email})
-
-            if(!alreadyExistUser)
-                return res.status(400).json({message: 'User does not exist!'})
-            
-            const token = jwt.sign({
-                email: alreadyExistUser.email,
-                id: alreadyExistUser._id,
-            }, config.get('JWT_SECRET'), {expiresIn: '4hr'})
-            res.status(200).json({result: alreadyExistUser, token})
-        })
-}else{
-    //email, password
-    const{email, password} = req.body;
-
-    if(email === '' || password === '')
-    return res.status(400).json({message: "Invalid field!"})
-
-    try{
-        const alreadyExistUser = await User.findOne({email})
-
-        if(!alreadyExistUser)
-            return res.status(400).json({message: 'User does not exist!'})
-
-        const isPasswordCorrect = await bcrypt.compare(password, alreadyExistUser.password);
-
-        if(!isPasswordCorrect) return res.status(400).json({message: 'Invalid Information!'})
-
-        const token = jwt.sign({
-            email: alreadyExistUser.email, 
-            id: alreadyExistUser._id
-        }, config.get('JWT_SECRET'), {expiresIn: '4hr'})
-
-        res.status(200).json({result: alreadyExistUser, token})
-
-    } catch (err) {   
-        console.log(err)
-        res.status(400).json({message: 'Invalid sign on information!'})}
+    if(!name || !email || !password) {
+        res.status(400)
+        throw new Error('Please add all fields')
     }
+
+    //Check if user exists
+    const userExists = await User.findOne({e})
+
+    if (userExists) {
+        res.status(400)
+        throw new Error ('User already exists')
+    }
+
+    //Hash Password
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassowrd = await bcrypt.hash(password, salt)
+
+    //Create User
+    const user = await User.create({
+        name,
+        emailpassword: hashedPassword
+    })
+
+    if(user) {
+        res.status(201).json({
+            _id: user.id,
+            name: user.name,
+            email: user.email,
+            token: generateToken(user._id)
+        })
+    } else {
+        res.status(400)
+        throw new Error('Invalid User data')
+    }
+})
+//AUTHENTICATE A USER
+//POST /api/users/login
+//Public
+const loginUser = asyncHandler(async(req, res) => {
+    const {email, password} = req.body
+    
+    //Check for user email
+    const user = await User.findOne({email})
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+        res.json({
+            _id: user.id,
+            name: user.name,
+            email: user.email,
+            token: generateToken(user._id)
+        })
+    } else {
+        res.status(400)
+        throw new Error('Invalid Credentials')
+    }
+})
+//GET USER DATA
+//GET /api/users/me
+//Private
+const getMe = asyncHandler(async(req, res) => {
+    const {_id, name, email} = await User.findById(req.user.id)
+
+    res.status(200).json({
+        id: _id,
+        name,
+        email,
+    })
+})
+
+//Generate Token
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '90d',
+    })
 }
 
-const signupController = async(req, res) =>{
-    if(req.body.googleAccessToken){
-        //google oauth
-        axios.get(`https://www.googleapis.com/oauth2/v3/userinfo`, {
-            headers: {
-                'Authorization': `Bearer ${req.body.googleAccessToken}`
-            }
-        }).then( async (response) =>{
-            const firstName = response.data.given_name;
-            const lastName = response.data.family_name;
-            const email = response.data.email;
-            
-            const alreadyExistUser = await User.findOne({email})
-
-            if(alreadyExistUser)
-                return res.status(400).json({message: 'User already exists!'})
-            
-            const result = await User.create(firstName, lastName, email)
-
-            const token = jwt.sign({
-                email: result.email,
-                id: result._id
-            }, config.get('JWT_SECRET'), {expiresIn:'4hr'})
-
-            res.status(200).json({result, token})
-        }) .catch (err) 
-            console.log(err)
-            res.status(400).json({message: 'Invalid sign on information!'})
-        
-    }else{
-        //normal form data
-        const {email, firstName, lastName, confirmPassword, password} = req.body;
-        
-        try{
-            if(!email || !firstName || !lastName || !confirmPassword || !password || password.length <= 8)
-            res.status(400).json({message: 'Invalid field!'})
-            const alreadyExistUser = await User.findOne({email})
-        
-            if(alreadyExistUser)
-                res.status(400).json({message: 'User already exists!'})
-        
-            const hashPassword = await bcrypt.hash(password, 12)
-
-            const result = await User.create({
-                password: hashPassword,
-                firstName, 
-                lastName, 
-                email})
-
-            const token = jwt.sign({
-                email: result.email,
-                id: result._id
-            }, config.get('JWT_SECRET'), {expiresIn:'4hr'})
-
-            res.status(200).json({result, token})
-        }catch(err){
-            console.log(err)
-            res.status(400).json({message: 'Error while signing up!'})
-        }
-        }
-    }
-
-
-module.exports = { signinController, signupController }
+module.exports = { registerUser, loginUser, getMe, }
