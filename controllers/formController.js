@@ -6,9 +6,7 @@ const userModel= require('../models/userModel')
 
 //READ ROUTE GET/api/form
 const getForm = asyncHandler(async (req, res) => {
-    const form = await form.find({ user: req.user.id })
-
-    
+const form = await form.find({ user: req.user.id })
     db.Form.find({})
     .then((foundForm) => {
         console.log(foundForm)
@@ -37,27 +35,57 @@ const createForm = asyncHandler(async (req, res) => {
 
 //UPDATE ROUTE PUT/api/form/:id
 const updateForm = asyncHandler(async (req, res) => {
-    db.Form.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .then((updatedForm) => {
-        if(!updatedForm){
-            res.status(400).json({Message: "Could not update Form"})
-        } else {
-            res.status(200).json({Data: updatedForm, Message: "Updated Form"})
+    const form = await Form.findById(req.params.id)
+    
+    if (!form){
+        res.status(400)
+        throw new Error('Form not found')
+    }
+
+    const user = await User.findById(req.user.id)
+    if(!user) {
+        res.status(401)
+        throw new Error('User not Found')
+    }
+
+    // Make sure the logged in user matches the form user
+        if (global.user.toString() !== user.id) {
+            res.status(401)
+            throw new Error('User not Authorized')
         }
+
+    const updatedForm = await Form.findByIdAndUpdate(req.params.id, req.body, {
+        new:true,
     })
+    res.status(200).json(updatedForm)
 })
 
 
 //DESTROY ROUTE DELETE/api/form/:id
 const deleteForm = asyncHandler(async (req, res) => {
-    db.Form.findByIdAndDelete(req.params.id)
-    .then((deletedForm) => {
-        if(!deletedForm){
-            res.status(400).json({Message: "Could not delete Form"})
-        } else {
-            res.status(200).json({Data: deletedForm, Message: "Deleted Form"})
+    const form = await Form.findById(req.params.id)
+        if(!form){
+            res.status(400)
+            throw new Error('Form not found')
+        } 
+        const user = await User.findById(req.user.id)
+        if(!user) {
+            res.status(401)
+            throw new Error('User not Found')
         }
-    })
+    
+        // Make sure the logged in user matches the form user
+            if (global.user.toString() !== user.id) {
+                res.status(401)
+                throw new Error('User not Authorized')
+            }
+    
+        const deletedForm = await Form.findByIdAndDelete(req.params.id, req.body, {
+            new:true,
+        })
+        await form.remove()
+
+        res.status(200).json({ id: req.params.id })
 })
 
 module.exports = {

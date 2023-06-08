@@ -1,3 +1,4 @@
 module.exports = {
-    formCtrl: require('./formController'),
+    formContoller: require('./formController'),
+    userController: require('./userController'),
 }
