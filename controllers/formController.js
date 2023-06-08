@@ -2,14 +2,13 @@ const db = require('../models')
 const asyncHandler = require('express-async-handler')
 console.log (db)
 const Form = require('../models/form')
-const userModel= require('../models/userModel')
+// const userModel= require('../models/userModel')
 
 //READ ROUTE GET/api/form
 const getForm = asyncHandler(async (req, res) => {
-const form = await form.find({ user: req.user.id })
+    const Form = await Form.find({ user: req.user.id })
     db.Form.find({})
     .then((foundForm) => {
-        console.log(foundForm)
             if(!foundForm){
                 console.log('inside if not form')
                 res.status(404).json({message: "Cannot find Form"})
@@ -19,6 +18,7 @@ const form = await form.find({ user: req.user.id })
             }
         })
     })
+
 
 //CREATE ROUTE POST/api/form
 const createForm = asyncHandler(async (req, res) => {

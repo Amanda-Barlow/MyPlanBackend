@@ -13,6 +13,5 @@ mongoose.connection
 
 module.exports = {
     Form: require('./form'),
-    User: require('./user'),
 
 }
