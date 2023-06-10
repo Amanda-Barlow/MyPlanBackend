@@ -14,7 +14,7 @@ const methodOverride = require('method-override');
 const MONGODB_URI = process.env.MONGODB_URI;
 mongoose.set('strictQuery', true)
 mongoose.connect(MONGODB_URI, {
-    useNewParser: false,
+    useNewUrlParser: false,
 });
 
 //Mongo errors/success
