@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const MONGODB_URI = process.env.MONGODB_URI;
+const Form = require('./form')
 
 mongoose.connect(MONGODB_URI, { 
-    useUnifiedTopology: true,
     useNewUrlParser: true,
+    useUnifiedTopology: true,
 });
 
 mongoose.connection
@@ -12,6 +13,5 @@ mongoose.connection
     .on("error", (error) => console.log(error));
 
 module.exports = {
-    Form: require('./form'),
-
+    Form,
 }

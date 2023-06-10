@@ -1,8 +1,36 @@
 const mongoose = require('mongoose');
 const Form = require('./models/form');
+const asyncHandler = require('express-async-handler')
 
+const getForms = async (req, res) => {
+    try{
+        const forms = await Form.find({user_id: req.user._id});
+        console.log('Got Forms', getForms);
+        res.json(forms);
+    } catch(error){
+        console.log('Got forms error:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
 
+const getFormById = async (req, res) => {
+    try{
+        const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: 'Invalid job ID' });
+        }
+        const form = await Form.findById(id);
+        if (!form) {
+            return res.status(404).json({ error: 'Form not found' });
+        }
+        res.json(form);
+    } catch(error){
+        console.log('Got forms error:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
 
-//Read the JSON files
-const forms = fs.readFileSync(path, `${__dirname}/_seedData/forms.json`)
-console.log(forms)
+module.exports = {
+    getForms,
+    getFormById
+}
