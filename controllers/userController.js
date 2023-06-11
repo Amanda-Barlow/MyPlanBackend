@@ -7,11 +7,11 @@ const User = require('../models/userModel')
 //POST /api.users
 //Public
 const registerUser = asyncHandler(async(req, res) => {
-    const { name, email, password } = req.body
+    const { email, password } = req.body
 
-    if(!name || !email || !password) {
+    if(!email || !password) {
         res.status(400)
-        throw new Error('Please add all fields')
+        throw new Error('Please sign in')
     }
 
     //Check if user exists
@@ -28,7 +28,6 @@ const registerUser = asyncHandler(async(req, res) => {
 
     //Create User
     const user = await User.create({
-        name,
         email,
         password: hashedPassword
     })
@@ -36,7 +35,6 @@ const registerUser = asyncHandler(async(req, res) => {
     if(user) {
         res.status(201).json({
             _id: user.id,
-            name: user.name,
             email: user.email,
             token: generateToken(user._id)
         })
@@ -57,7 +55,6 @@ const loginUser = asyncHandler(async(req, res) => {
     if (user && (await bcrypt.compare(password, user.password))) {
         res.json({
             _id: user.id,
-            name: user.name,
             email: user.email,
             token: generateToken(user._id)
         })
@@ -70,11 +67,10 @@ const loginUser = asyncHandler(async(req, res) => {
 //GET /api/users/me
 //Private
 const getMe = asyncHandler(async(req, res) => {
-    const {_id, name, email} = await User.findById(req.user.id)
+    const {_id, email} = await User.findById(req.user.id)
 
     res.status(200).json({
         id: _id,
-        name,
         email,
     })
 })

@@ -8,13 +8,13 @@ const Form = require('../models/form')
 const getForm = asyncHandler(async (req, res) => {
     const Form = await Form.find({ user: req.user.id })
     db.Form.find({})
-    .then((foundForm) => {
-            if(!foundForm){
+    .then((findForm) => {
+            if(!findForm){
                 console.log('inside if not form')
                 res.status(404).json({message: "Cannot find Form"})
             } else {
                 console.log('inside else of form')
-                res.status(200).json({data: foundForm})
+                res.status(200).json({data: findForm})
             }
         })
     })
