@@ -30,7 +30,7 @@ res.status(200).json(form)
 
 //CREATE ROUTE POST/api/forms
 const createForm = asyncHandler(async (req, res) => {
-const createdForm = await db.Form.createForm(req.body)
+const createdForm = await Form.create(req.body)
     if(!createdForm){
     res.status(400).json({message: "Cannot create Form"})
     } else {
