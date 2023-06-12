@@ -4,7 +4,7 @@ const asyncHandler = require('express-async-handler')
 const Form = require('../models/form')
 const User= require('../models/userModel')
 
-//READ ROUTE GET/api/form
+//READ ROUTE GET/api/forms
 const getForm = asyncHandler(async (req, res) => {
     const forms = await Form.find({ user: req.user.id })
     if(forms.length === 0) {
@@ -16,8 +16,8 @@ const getForm = asyncHandler(async (req, res) => {
 
 const setForm = asyncHandler(async (req, res) => {
     if (!req.body.text) {
-        res.status(400)
-        throw new Error('Add text field')
+    res.status(400)
+    throw new Error('Add text field')
     }
 
 const form = await Form.create({
@@ -28,7 +28,7 @@ const form = await Form.create({
 res.status(200).json(form)
 })
 
-//CREATE ROUTE POST/api/form
+//CREATE ROUTE POST/api/forms
 const createForm = asyncHandler(async (req, res) => {
 const createdForm = await db.Form.create(req.body)
     if(!createdForm){
@@ -88,7 +88,7 @@ const deleteForm = asyncHandler(async (req, res) => {
                 throw new Error('User not Authorized')
             }
     
-        const deletedForm = await Form.findByIdAndDelete(req.params.id, req.body, {
+        const deletedForm = await Form.findByIdAndDelete(req.params.id, {
             new:true,
         })
         await form.remove()
