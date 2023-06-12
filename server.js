@@ -38,7 +38,7 @@ app.use('/api/users', require('./routes/userRoutes'));
 app.use(cors());
 
 app.use('/', routes);
-app.use('form', formRoutes);
+app.use('/forms', formRoutes);
 app.use('/user', userRoutes);
 
 

@@ -2,11 +2,6 @@ const mongoose=require('mongoose');
 
 
 const FormSchema= new mongoose.Schema({
-    user:{
-        type: mongoose.Schema.Types.ObjectId, 
-        required: true,
-        ref: 'User'
-    },
     name: {type: String, required: true},
     goal: {type: String, require: false},
     skills: {type: Boolean},
