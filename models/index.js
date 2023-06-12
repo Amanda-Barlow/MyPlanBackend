@@ -7,6 +7,4 @@ mongoose.connect(MONGODB_URI, {
     useUnifiedTopology: true,
 });
 
-module.exports = {
-    Form,
-}
+module.exports = Form

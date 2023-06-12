@@ -57,7 +57,4 @@ module.exports = async (req, res, next) => {
 //     }
 // })
 
-module.exports = {
-    auth,
-}
 
