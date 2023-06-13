@@ -12,7 +12,7 @@ const generateToken = (id) => {
 };
 
 //REGISTER NEW USER
-//POST /api.users
+//POST /api/users
 //Public
 const registerUser = asyncHandler(async(req, res) => {
     const { email, password } = req.body;

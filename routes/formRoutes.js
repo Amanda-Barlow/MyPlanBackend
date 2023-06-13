@@ -5,10 +5,10 @@ const { createForm } = require('../controllers/formController');
 const { updateForm } = require('../controllers/formController');
 const { deleteForm } = require('../controllers/formController')
 
-const {protect} = require('../middleware/auth')
+// const {protect} = require('../middleware/auth')
 
 //ROUTES
-router.route('/').get(protect, getForm).post(protect, createForm);
-router.route('/:id').delete(protect, deleteForm).put(protect, updateForm)
+router.route('/').get( getForm ).post( createForm );
+router.route('/:id').delete( deleteForm ).put( updateForm )
 
 module.exports = router;
