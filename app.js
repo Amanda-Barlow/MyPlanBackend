@@ -25,7 +25,7 @@ res.setHeader(
 );
 res.setHeader(
     'Access-Control-Allow-Methods',
-    'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+    'GET, POST, PUT, DELETE'
 );
 next();
 });
@@ -49,6 +49,7 @@ app.post('/register', (req, res) => {
             result,
         });
     })
+
     //catch error if the new user wasn't added successfully to the database
     .catch((error) => {
         response.status(500).send({
@@ -57,6 +58,7 @@ app.post('/register', (req, res) => {
         });
     });
 })
+
   //catch error if the password has isn't successful  
     .catch((e) => {
         res.status(500).send({
@@ -74,6 +76,7 @@ app.post('/login', (req, res) => {
         bcrypt.compare(req.body.password,
             user.password)
     })
+
     //if the passwords match
     .then((passwordCheck) => {
         if(!passwordCheck){
@@ -82,6 +85,7 @@ app.post('/login', (req, res) => {
                 error,
             });
         }
+
          // create JWT token 
          const token = jwt.sign(
             {
@@ -91,6 +95,7 @@ app.post('/login', (req, res) => {
             'RANDOM-TOKEN',
             {expiresIn: '24hr'}
         );
+
         // return success response
         res.status(200).send({
             message: 'Login Successful',
@@ -105,6 +110,7 @@ app.post('/login', (req, res) => {
         });
     });
 })
+
     .catch((e) => {
         res.status(404).send({
             message: 'Email not found',
