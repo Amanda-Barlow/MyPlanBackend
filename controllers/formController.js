@@ -5,8 +5,10 @@ const Form = require('../models/form')
 const User= require('../models/userModel')
 
 //READ ROUTE GET/api/forms
+
 const getForm = asyncHandler(async (req, res) => {
-    const forms = await Form.find({ user: req.user.id })
+    
+    const form = await Form.find({ user: req.user.id })
     if(forms.length === 0) {
     res.status(404).json({ message: 'Cannot find Form' })
     } else {
@@ -15,6 +17,7 @@ const getForm = asyncHandler(async (req, res) => {
 })
 
 const setForm = asyncHandler(async (req, res) => {
+    router.post('./form', setForm);
     if (!req.body.text) {
     res.status(400)
     throw new Error('Add text field')
