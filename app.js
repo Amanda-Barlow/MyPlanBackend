@@ -21,10 +21,7 @@ dbConnect();
 app.use((req, res, next) => {res.setHeader('Access-Control-Allow-Origin', '*');
 res.setHeader(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
-);
-res.setHeader(
-    'Access-Control-Allow-Methods',
+    'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization',
     'GET, POST, PUT, DELETE'
 );
 next();
@@ -69,7 +66,7 @@ app.post('/register', (req, res) => {
     
 app.post('/login', (req, res) => {
     //check if email exists
-    User.findOne({ email: req.body.email })
+    User.findOneAndUpdate({ email: req.body.email })
     //if email exists
     .then((user) =>{
         //compare the password entered and the hashed password found
