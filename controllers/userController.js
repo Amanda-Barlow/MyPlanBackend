@@ -10,7 +10,25 @@ const generateToken = (id) => {
         expiresIn: '90d',
     });
 };
+//AUTHENTICATE A USER
+//POST /api/users/login
+//Public
+const loginUser = asyncHandler(async(req, res) => {
+    const {email, password} = req.body
+    
+    //Check for user email
+    //Check for user email
+const user = await User.findOne({ email });
 
+if (user && (await bcrypt.compare(password, user.password))) {
+    res.redirect('/formRoutes'); //Redirect to home page when user is authenticated
+} else {
+    res.redirect('/forms')
+    res.status(401).json({message: 'Invalid email or password'});
+    throw new Error('Invalid email or password');
+}
+
+});
 //REGISTER NEW USER
 //POST /api/users
 //Public
@@ -18,6 +36,7 @@ const registerUser = asyncHandler(async(req, res) => {
     const { email, password } = req.body;
 
     if(!email || !password) {
+        console.log('wrong email or password')
         res.status(400).json({ message: 'Please provide email and password' });
         throw new Error('Please provide email and password')
     }
@@ -32,8 +51,8 @@ const registerUser = asyncHandler(async(req, res) => {
     
       // rest of the code
     } catch (error) {
-      console.error(error.message);
-      res.status(500).json({ message: 'Internal server error' });
+      console.error('Show error notification');
+      return Promise.reject(error);
     }
 
     //Hash Password
@@ -58,26 +77,6 @@ const registerUser = asyncHandler(async(req, res) => {
     }
 });
 
-//AUTHENTICATE A USER
-//POST /api/users/login
-//Public
-const loginUser = asyncHandler(async(req, res) => {
-    const {email, password} = req.body
-    
-    //Check for user email
-    const user = await User.findOne({ email });
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-        res.json({
-            _id: user.id,
-            email: user.email,
-            token: generateToken(user._id)
-        });
-    } else {
-        res.status(401).json({message: 'Invalid email or password'});
-        throw new Error('Invalid email or password');
-    }
-});
 
 //GET USER DATA
 //GET /api/users/getUserData
