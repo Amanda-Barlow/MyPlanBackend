@@ -12,7 +12,7 @@ const getForm = asyncHandler(async (req, res) => {
     if(forms.length === 0) {
     res.status(404).json({ message: 'Cannot find Form' })
     } else {
-        res.status(200).json({ data: forms })
+        res.status(200).json({ data: form })
     }
 })
 
