@@ -22,11 +22,11 @@ app.use(methodOverride('_method'));
 app.use(cors())
 
 // Routes
-app.use('/api/plans', require('./routes/planRoutes'));
+app.use('/api/plan', require('./routes/planRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 
 app.use('/', routes);
-app.use('/plans', planRoutes);
+app.use('/plan', planRoutes);
 app.use('/user', userRoutes);
 
 // DATABASE CONNECTION

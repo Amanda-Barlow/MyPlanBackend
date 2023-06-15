@@ -23,7 +23,7 @@ const user = await User.findOne({ email });
 if (user && (await bcrypt.compare(password, user.password))) {
     res.redirect('/planRoutes'); //Redirect to home page when user is authenticated
 } else {
-    res.redirect('/plans')
+    res.redirect('/plan')
     res.status(401).json({message: 'Invalid email or password'});
     throw new Error('Invalid email or password');
 }
