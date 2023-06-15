@@ -2,15 +2,19 @@
 require('dotenv').config();
 const express = require("express");
 const app = express();
+const cors = require("cors");
+
 const mongoose = require('mongoose');
 const routes = require('./routes/index');
 const planRoutes = require('./routes/planRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
-const cors = require("cors");
 const port = process.env.PORT || 4000;
 const methodOverride = require('method-override');
 const dbConnect = require('./models/dbConnect');
 const bcrypt = require('bcrypt');
+
+// Enable CORS for all routes
+app.use(cors())
 
 // Middleware
 app.use(express.json());
@@ -18,16 +22,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(methodOverride('_method'));
 
-// Enable CORS for all routes
-app.use(cors())
 
 // Routes
-app.use('/api/plan', require('./routes/planRoutes'));
-app.use('/api/users', require('./routes/userRoutes'));
+// app.use('/api/plan', require('./routes/planRoutes'));
+// app.use('/api/users', require('./routes/userRoutes'));
 
 app.use('/', routes);
 app.use('/plan', planRoutes);
 app.use('/user', userRoutes);
+
+//catch all 404 route!
+app.use((req, res) => {res.status(404).json({message: "NOT A PROPER ROUTE"})})
 
 // DATABASE CONNECTION
 dbConnect();

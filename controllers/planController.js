@@ -28,10 +28,11 @@ res.status(200).json(plan)
 
 const getPlan = asyncHandler(async (req, res) => { 
     const plan = await Plan.find({ user: req.user })
+    db.Plan.find({})
     if(plan.length === 0) {
     res.status(404).json({ message: 'Cannot find Plan' })
     } else {
-        res.status(200).json({ data: plan })
+        res.status(200).json({ data: foundPlan })
     }
 })
 
