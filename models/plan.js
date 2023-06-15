@@ -1,6 +1,5 @@
 const mongoose=require('mongoose');
 
-
 const PlanSchema= new mongoose.Schema({
     name: {type: String, required: true},
     goal: {type: String, require: false},
