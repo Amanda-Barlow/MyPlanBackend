@@ -1,41 +1,41 @@
 const mongoose = require('mongoose');
-const Form = require('./models/form');
+const Plan = require('./models/plans');
 const asyncHandler = require('express-async-handler')
 
-const getForms = async (req, res) => {
+const getPlans = async (req, res) => {
     try{
-        const forms = await Form.find({user_id: req.user._id});
-        console.log('Got Forms', getForms);
-        res.json(forms);
+        const plans = await Plan.find({user_id: req.user._id});
+        console.log('Got Plans', getPlans);
+        res.json(plans);
     } catch(error){
-        console.log('Got forms error:', error);
+        console.log('Got plans error:', error);
         res.status(500).json({ error: 'Server error' });
     }
 };
 
-const getFormById = async (req, res) => {
+const getPlanById = async (req, res) => {
     try{
         const { id } = req.params;
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ error: 'Invalid job ID' });
         }
-        const form = await Form.findById(id);
-        if (!form) {
-            return res.status(404).json({ error: 'Form not found' });
+        const plan = await Plan.findById(id);
+        if (!plan) {
+            return res.status(404).json({ error: 'Plan not found' });
         }
-        res.json(form);
+        res.json(plan);
     } catch(error){
-        console.log('Got forms error:', error);
+        console.log('Got plans error:', error);
         res.status(500).json({ error: 'Server error' });
     }
 };
 
 module.exports = {
-    getForms,
-    getFormById
+    getPlans,
+    getPlanById
 }
 
-//  {"Form": {
+//  {"Plan": {
 //     "name": "Bob Barker",
 //     "goal": "Find the right Price",
 //     "skills": "Saying Come On Down",
@@ -48,7 +48,7 @@ module.exports = {
 // }
 
 
-// {"Form":{
+// {"Plan":{
 //     "name": "Bobby Brown",
 //     "goal": "Become a Star",
 //     "skills": "Rapping?",

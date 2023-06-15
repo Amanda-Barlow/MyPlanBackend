@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 
 
-const FormSchema= new mongoose.Schema({
+const PlanSchema= new mongoose.Schema({
     name: {type: String, required: true},
     goal: {type: String, require: false},
     skills: {type: String},
@@ -11,8 +11,8 @@ const FormSchema= new mongoose.Schema({
 }, {timestamps: true});
 
 
-const Form = mongoose.model('Form', FormSchema);
-module.exports = Form;
+const Plan = mongoose.model('Plan', PlanSchema);
+module.exports = Plan;
 
 
     // phq9: {type: Number, require: false}, 

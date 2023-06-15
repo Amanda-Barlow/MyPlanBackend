@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const mongoose = require('mongoose');
 const routes = require('./routes/index');
-const formRoutes = require('./routes/formRoutes.js');
+const planRoutes = require('./routes/planRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
 const cors = require("cors");
 const port = process.env.PORT || 4000;
@@ -22,11 +22,11 @@ app.use(methodOverride('_method'));
 app.use(cors())
 
 // Routes
-app.use('/api/forms', require('./routes/formRoutes'));
+app.use('/api/plans', require('./routes/planRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 
 app.use('/', routes);
-app.use('/forms', formRoutes);
+app.use('/plans', planRoutes);
 app.use('/user', userRoutes);
 
 // DATABASE CONNECTION

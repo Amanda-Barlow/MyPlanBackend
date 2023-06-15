@@ -21,9 +21,9 @@ const loginUser = asyncHandler(async(req, res) => {
 const user = await User.findOne({ email });
 
 if (user && (await bcrypt.compare(password, user.password))) {
-    res.redirect('/formRoutes'); //Redirect to home page when user is authenticated
+    res.redirect('/planRoutes'); //Redirect to home page when user is authenticated
 } else {
-    res.redirect('/forms')
+    res.redirect('/plans')
     res.status(401).json({message: 'Invalid email or password'});
     throw new Error('Invalid email or password');
 }
