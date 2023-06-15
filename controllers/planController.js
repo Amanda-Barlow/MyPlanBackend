@@ -1,10 +1,12 @@
 
 const db = require('../models');
+console.log(db);
 const asyncHandler = require('express-async-handler');
 const Plan = require('../models/plan');
 const User = require('../models/userModel');
 const express = require('express');
 const router = express.Router();
+
 // PUT ROUTE PUT/api/plans
 const setPlan = asyncHandler(async (req, res) => {
   if (!req.body.text) {
@@ -21,6 +23,7 @@ const setPlan = asyncHandler(async (req, res) => {
   }
   res.status(200).json(plan);
 });
+
 // READ ROUTE GET/api/plans
 const getPlan = asyncHandler(async (req, res) => {
   const plan = await Plan.find({ user: req.user });
@@ -30,6 +33,7 @@ const getPlan = asyncHandler(async (req, res) => {
     res.status(200).json({ data: plan });
   }
 });
+
 // CREATE ROUTE POST/api/plans
 const createPlan = asyncHandler(async (req, res) => {
   const createdPlan = await Plan.create(req.body);
@@ -39,6 +43,7 @@ const createPlan = asyncHandler(async (req, res) => {
     res.status(201).json({ data: createdPlan });
   }
 });
+
 // UPDATE ROUTE PUT/api/plan/:id
 const updatePlan = asyncHandler(async (req, res) => {
   const plan = await Plan.findById(req.params.id);
@@ -61,6 +66,7 @@ const updatePlan = asyncHandler(async (req, res) => {
   });
   res.status(200).json(updatedPlan);
 });
+
 // DESTROY ROUTE DELETE/api/plan/:id
 const deletePlan = asyncHandler(async (req, res) => {
   const plan = await Plan.findById(req.params.id);

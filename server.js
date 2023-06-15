@@ -1,14 +1,13 @@
-
 require('dotenv').config();
+const { PORT } = process.env.PORT || 4000;
 const express = require("express");
 const app = express();
+const routes = require('./routes/index');
 const cors = require("cors");
 
 const mongoose = require('mongoose');
-const routes = require('./routes/index');
 const planRoutes = require('./routes/planRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
-const port = process.env.PORT || 4000;
 const methodOverride = require('method-override');
 const dbConnect = require('./models/dbConnect');
 const bcrypt = require('bcrypt');
@@ -24,9 +23,6 @@ app.use(methodOverride('_method'));
 
 
 // Routes
-// app.use('/api/plan', require('./routes/planRoutes'));
-// app.use('/api/users', require('./routes/userRoutes'));
-
 app.use('/', routes);
 app.use('/plan', planRoutes);
 app.use('/user', userRoutes);
@@ -49,4 +45,4 @@ db.on('connected', () => console.log('MongoDB Connected'));
 db.on('disconnected', () => console.log('MongoDB Disconnected'));
 
 // LISTENER
-app.listen(port, () => console.log(`Server started on port ${port}`));
+app.listen(PORT, () => console.log(`Server started on port ${ PORT }`));
