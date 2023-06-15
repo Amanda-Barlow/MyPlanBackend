@@ -94,4 +94,11 @@ router.get('/plan', getPlan);
 router.post('/plan', createPlan);
 router.put('/plan/:id', updatePlan);
 router.delete('/plan/:id', deletePlan);
-module.exports = router;
+
+module.exports = [ 
+    setPlan,
+    getPlan,
+    createPlan,
+    updatePlan,
+    deletePlan
+]
