@@ -22,6 +22,10 @@ const setPlan = async (req, res) => {
 
 // READ ROUTE GET/api/plans
 const getPlan = (req, res) => {
+    if (!req.user || !req.user.id) {
+        res.status(401).json({ message: 'User not Authorized' });
+        return;
+      }
     Plan.find({ user: req.user })
       .then((plan) => {
         if (plan.length === 0) {
