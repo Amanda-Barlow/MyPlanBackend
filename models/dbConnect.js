@@ -8,7 +8,6 @@ async function dbConnect() {
     mongoose.connect(MONGODB_URI, { 
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateIndex: true,
     }
 )
     .then(() => {

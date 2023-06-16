@@ -22,20 +22,19 @@ const user = await User.findOne({ email });
 if (user && (await bcrypt.compare(password, user.password))) {
     res.redirect('/planRoutes'); //Redirect to home page when user is authenticated
 } else {
-    res.redirect('/plan')
     res.status(401).json({message: 'Invalid email or password'});
     throw new Error('Invalid email or password');
 }
 
 });
+
 //REGISTER NEW USER
-//POST /api/users
+//POST /api/user
 //Public
 const registerUser = asyncHandler(async(req, res) => {
     const { email, password } = req.body;
 
     if(!email || !password) {
-        console.log('wrong email or password')
         res.status(400).json({ message: 'Please provide email and password' });
         throw new Error('Please provide email and password')
     }
@@ -45,7 +44,7 @@ const registerUser = asyncHandler(async(req, res) => {
       const userExists = await User.findOne({ email });
     
       if (userExists) {
-        return res.status(409).json({ message: 'User already exists' });
+        return res.status(400).json({ message: 'User already exists' });
       }
     
       // rest of the code
@@ -80,17 +79,17 @@ const registerUser = asyncHandler(async(req, res) => {
 //GET USER DATA
 //GET /api/users/getUserData
 //Private
-const getUserData = asyncHandler(async(req, res) => {
+const getUserData = async(req, res) => {
     const {_id, email} = await User.findById(req.user.id)
 
     res.status(200).json({
         id: _id,
         email,
     })
-})
+}
 
 module.exports = { 
     registerUser, 
-    loginUser, 
     getUserData, 
+    loginUser
 }
