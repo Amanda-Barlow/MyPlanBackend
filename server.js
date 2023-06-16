@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { PORT } = process.env.PORT || 4000;
+const PORT = process.env.PORT 
 const express = require("express");
 const app = express();
 const routes = require('./routes/index');
@@ -10,7 +10,6 @@ const planRoutes = require('./routes/planRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
 const methodOverride = require('method-override');
 const dbConnect = require('./models/dbConnect');
-const bcrypt = require('bcrypt');
 
 // Enable CORS for all routes
 app.use(cors())

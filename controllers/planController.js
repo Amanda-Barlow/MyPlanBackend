@@ -1,14 +1,13 @@
 
 const db = require('../models');
 console.log(db);
-const asyncHandler = require('express-async-handler');
 const Plan = require('../models/plan');
 const User = require('../models/userModel');
 const express = require('express');
 const router = express.Router();
 
 // PUT ROUTE PUT/api/plans
-const setPlan = asyncHandler(async (req, res) => {
+const setPlan = (async (req, res) => {
   if (!req.body.text) {
     res.status(400);
     throw new Error('Add text field');
@@ -25,17 +24,22 @@ const setPlan = asyncHandler(async (req, res) => {
 });
 
 // READ ROUTE GET/api/plans
-const getPlan = asyncHandler(async (req, res) => {
-  const plan = await Plan.find({ user: req.user });
-  if (plan.length === 0) {
-    res.status(404).json({ message: 'Cannot find Plan' });
-  } else {
-    res.status(200).json({ data: plan });
-  }
-});
+const getPlan = (req, res) => {
+    Plan.find({ user: req.user })
+      .then((plan) => {
+        if (plan.length === 0) {
+          res.status(404).json({ message: 'Cannot find Plan' });
+        } else {
+          res.status(200).json({ data: plan });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({ message: 'Internal Server Error', error: error });
+      });
+  };
 
 // CREATE ROUTE POST/api/plans
-const createPlan = asyncHandler(async (req, res) => {
+const createPlan = (async (req, res) => {
   const createdPlan = await Plan.create(req.body);
   if (!createdPlan) {
     res.status(400).json({ message: 'Cannot create Plan' });
@@ -45,7 +49,7 @@ const createPlan = asyncHandler(async (req, res) => {
 });
 
 // UPDATE ROUTE PUT/api/plan/:id
-const updatePlan = asyncHandler(async (req, res) => {
+const updatePlan = (async (req, res) => {
   const plan = await Plan.findById(req.params.id);
   if (!plan) {
     res.status(400);
@@ -68,7 +72,7 @@ const updatePlan = asyncHandler(async (req, res) => {
 });
 
 // DESTROY ROUTE DELETE/api/plan/:id
-const deletePlan = asyncHandler(async (req, res) => {
+const deletePlan = (async (req, res) => {
   const plan = await Plan.findById(req.params.id);
   if (!plan) {
     res.status(400);
@@ -89,16 +93,16 @@ const deletePlan = asyncHandler(async (req, res) => {
   });
   res.status(200).json({ id: req.params.id });
 });
-router.put('/plan', setPlan);
-router.get('/plan', getPlan);
-router.post('/plan', createPlan);
-router.put('/plan/:id', updatePlan);
-router.delete('/plan/:id', deletePlan);
+// router.put('/plan', setPlan);
+// router.get('/plan', getPlan);
+// router.post('/plan', createPlan);
+// router.put('/plan/:id', updatePlan);
+// router.delete('/plan/:id', deletePlan);
 
-module.exports = [ 
+module.exports = {
     setPlan,
     getPlan,
     createPlan,
     updatePlan,
     deletePlan
-]
+}
