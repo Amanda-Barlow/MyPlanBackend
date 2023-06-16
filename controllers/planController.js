@@ -1,6 +1,6 @@
+const express = require('express');
 const Plan = require('../models/plan');
 const User = require('../models/userModel');
-const express = require('express');
 const router = express.Router();
 
 // PUT ROUTE PUT/api/plans
@@ -40,19 +40,15 @@ const getPlan = (req, res) => {
   };
 
 // CREATE ROUTE POST/api/plans
-const createPlan = (req, res) => {
-    Plan.create(req.body)
-      .then((createdPlan) => {
-        if (!createdPlan) {
-          res.status(400).json({ message: 'Cannot create Plan' });
-        } else {
-          res.status(201).json({ data: createdPlan });
-        }
-      })
-      .catch((error) => {
-        res.status(500).json({ message: 'Internal Server Error', error: error });
-      });
+const createPlan = async (req, res) => {
+    try {
+      const createdPlan = await Plan.create(req.body);
+      res.status(201).json({ data: createdPlan });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
   };
+  
 
 // UPDATE ROUTE PUT/api/plan/:id
 const updatePlan = async (req, res) => {
