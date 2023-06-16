@@ -1,5 +1,4 @@
 require('dotenv').config();
-
 const PORT = process.env.PORT 
 const express = require("express");
 const app = express();
@@ -16,17 +15,11 @@ const bcrypt = require('bcrypt');
 // Enable CORS for all routes
 app.use(cors("*"))
 
-//status checkpoints
-app.get('/status', (req, res) => res.sendStatus(200));
-app.head('/status', (req, res) => res.sendStatus(200))
-
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(methodOverride('_method'));
-app.use(routes);
-app.get('*', (req, res) => res.sendFile());
 app.use(bodyParser.urlencoded({
     extended: false
   })
